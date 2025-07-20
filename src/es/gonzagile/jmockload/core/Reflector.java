@@ -29,6 +29,7 @@ final class Reflector {
      * @param value The value to be set.
      */
     static void setField(Object target, Field field, Object value) {
+        if(field.getType().isPrimitive()) throw new IllegalArgumentException("No hay soporte para primitivos (atributo " + field.getName() + ")");
         try {
             field.setAccessible(true);
             field.set(target, value);
