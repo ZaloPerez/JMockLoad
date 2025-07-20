@@ -28,3 +28,10 @@ You can pick none, one or many of the constraints inside es.gonzagile.jmockload.
 * **.apply()**
 
 This is the closure method for the configuration. All the .configure(String fieldname) chains must end with .apply().
+
+## Pre requisites
+
+*The objects to be generated must comply with the next rules at this moment:
+1. It must be a class, not a record, enum, interface nor annotation.
+2. It must have a public constructor with no params.
+3. At the moment there are no custom generators nor constraints, so you need to stick with the ones availables(String, Integer and Long at the moment). If there is no generator to a type, it will always be null.
