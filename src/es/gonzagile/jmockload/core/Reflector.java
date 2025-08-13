@@ -29,13 +29,64 @@ final class Reflector {
      * @param value The value to be set.
      */
     static void setField(Object target, Field field, Object value) {
-        if(field.getType().isPrimitive()) throw new IllegalArgumentException("No hay soporte para primitivos (atributo " + field.getName() + ")");
         try {
             field.setAccessible(true);
-            field.set(target, value);
+            Class<?> type = field.getType();
+            if(!type.isPrimitive()) {
+                field.set(target, value);
+            } else {
+                if(null == value) {
+                    setPrimitiveDefault(target, field, type);
+                } else {
+                    setGeneratedPrimitive(target, field, value);
+                }
+            }
         } catch (Exception e) {
             throw new RuntimeException("No se pudo establecer el valor del campo " +
                     field.getName() + " en " + target.getClass().getName(), e);
+        }
+    }
+
+    /**
+     * Sets a primitive's generated value to the defined field of the defined object.
+     * @param target The object whose field is gonna be set.
+     * @param field The field that is gonna be set.
+     * @param value The value to be set.
+     * @throws IllegalAccessException In case something unexpected happens and type doesn't match with any of the primitives
+     */
+    private static void setGeneratedPrimitive(Object target, Field field, Object value) throws IllegalAccessException {
+        Class<?> type = field.getType();
+        switch (type.getName()) {
+            case "boolean" -> field.setBoolean(target, (boolean) value);
+            case "char" -> field.setChar(target, (char) value);
+            case "byte" -> field.setByte(target, (byte) value);
+            case "short" -> field.setShort(target, (short) value);
+            case "int" -> field.setInt(target, (int) value);
+            case "long" -> field.setLong(target, (long) value);
+            case "float" -> field.setFloat(target, (float) value);
+            case "double" -> field.setDouble(target, (double) value);
+            default -> throw new IllegalAccessException("Unsupported primitive type: " + type);
+        }
+    }
+
+    /**
+     * Initializes a primitive field with the primitive default value.
+     * @param target The object whose field is gonna be set.
+     * @param field The field that is gonna be set.
+     * @param type The primitive type used to set it's default value.
+     * @throws IllegalAccessException In case something unexpected happens and type doesn't match with any of the primitives
+     */
+    private static void setPrimitiveDefault(Object target, Field field, Class<?> type) throws IllegalAccessException {
+        switch (type.getName()) {
+            case "boolean" -> field.setBoolean(target, false);
+            case "char" -> field.setChar(target, '\0');
+            case "byte" -> field.setByte(target, (byte) 0);
+            case "short" -> field.setShort(target, (short) 0);
+            case "int" -> field.setInt(target, 0);
+            case "long" -> field.setLong(target, 0L);
+            case "float" -> field.setFloat(target, 0f);
+            case "double" -> field.setDouble(target, 0d);
+            default -> throw new IllegalAccessException("Unsupported primitive type: " + type);
         }
     }
 }
