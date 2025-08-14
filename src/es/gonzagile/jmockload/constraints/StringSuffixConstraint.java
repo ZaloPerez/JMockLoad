@@ -85,7 +85,7 @@ public final class StringSuffixConstraint implements FieldConstraint {
      */
     @Override
     public boolean isValid(Object value) {
-        if(!(value instanceof String stringvalue)) throw new IllegalArgumentException("the param of the method must be a String");
+        if(!(value instanceof String stringvalue)) throw new IllegalArgumentException("Method's param must be a String");
         if(stringvalue.length() < minlength || stringvalue.length() > maxlength) return false;
         if(splitterbased) {
             if(minlength == maxlength) return stringvalue.charAt(maxlength-1) == splitter;

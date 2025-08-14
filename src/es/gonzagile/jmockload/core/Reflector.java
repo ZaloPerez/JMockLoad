@@ -18,7 +18,7 @@ final class Reflector {
             Constructor<T> constructor = clazz.getDeclaredConstructor();
             return constructor.newInstance();
         } catch (Exception e) {
-            throw new RuntimeException("No se pudo crear instancia de " + clazz.getName(), e);
+            throw new RuntimeException("Failed to create instance of " + clazz.getName(), e);
         }
     }
 
@@ -42,8 +42,8 @@ final class Reflector {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("No se pudo establecer el valor del campo " +
-                    field.getName() + " en " + target.getClass().getName(), e);
+            throw new RuntimeException("Failed to set value for field '" +
+                    field.getName() + "' in " + target.getClass().getName(), e);
         }
     }
 

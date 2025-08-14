@@ -43,7 +43,7 @@ public final class SmartStringGenerator implements ValueGenerator<String> {
                 suffix = ssc.getSuffix();
                 splitterbasedsuffix = ssc.isSplitterbased();
                 suffixdictionary = ssc.getSuffixdictionary();
-                if(suffix.length() > maxlength) throw new IllegalStateException("suffix's length can't be greater than default generated string's maxlength (10)");
+                if(suffix.length() > maxlength) throw new IllegalStateException("Suffix's length can't be greater than default generated string's maxlength (10)");
             }
         }
 
