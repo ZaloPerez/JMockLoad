@@ -19,6 +19,9 @@ public final class RandomArrayGenerator<T> implements ValueGenerator<T[]> {
     }
 
     public RandomArrayGenerator(Class<T> componentType, ValueGenerator<T> generator, int minlen, int maxlen) {
+        if (componentType.isPrimitive()) {
+            throw new IllegalArgumentException("Primitives are not allowed: " + componentType);
+        }
         this.componentType = componentType;
         this.generator = generator;
         this.minlen = minlen;
