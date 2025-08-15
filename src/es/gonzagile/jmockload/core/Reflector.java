@@ -32,40 +32,14 @@ final class Reflector {
         try {
             field.setAccessible(true);
             Class<?> type = field.getType();
-            if(!type.isPrimitive()) {
-                field.set(target, value);
+            if(type.isPrimitive() && null == value) {
+                setPrimitiveDefault(target, field, type);
             } else {
-                if(null == value) {
-                    setPrimitiveDefault(target, field, type);
-                } else {
-                    setGeneratedPrimitive(target, field, value);
-                }
+                field.set(target, value);
             }
         } catch (Exception e) {
             throw new RuntimeException("Failed to set value for field '" +
                     field.getName() + "' in " + target.getClass().getName(), e);
-        }
-    }
-
-    /**
-     * Sets a primitive's generated value to the defined field of the defined object.
-     * @param target The object whose field is gonna be set.
-     * @param field The field that is gonna be set.
-     * @param value The value to be set.
-     * @throws IllegalAccessException In case something unexpected happens and type doesn't match with any of the primitives
-     */
-    private static void setGeneratedPrimitive(Object target, Field field, Object value) throws IllegalAccessException {
-        Class<?> type = field.getType();
-        switch (type.getName()) {
-            case "boolean" -> field.setBoolean(target, (boolean) value);
-            case "char" -> field.setChar(target, (char) value);
-            case "byte" -> field.setByte(target, (byte) value);
-            case "short" -> field.setShort(target, (short) value);
-            case "int" -> field.setInt(target, (int) value);
-            case "long" -> field.setLong(target, (long) value);
-            case "float" -> field.setFloat(target, (float) value);
-            case "double" -> field.setDouble(target, (double) value);
-            default -> throw new IllegalAccessException("Unsupported primitive type: " + type);
         }
     }
 
