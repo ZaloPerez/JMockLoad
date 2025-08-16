@@ -4,7 +4,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 
 /**
- * Used to instanciate the objects and their fields.
+ * Used to instantiate the objects and their fields.
  */
 final class Reflector {
     /**

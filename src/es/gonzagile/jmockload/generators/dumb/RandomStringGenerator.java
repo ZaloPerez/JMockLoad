@@ -35,11 +35,10 @@ public final class RandomStringGenerator implements ValueGenerator<String> {
     @Override
     public String generate() {
         StringBuilder sb = new StringBuilder();
-        Random random = new Random();
         int length = r.nextInt(maxlength - minlength +1) + minlength;
         for(int i = 0; i < length; i++) {
-            sb.append(random.nextBoolean() ? (char) ('a' + random.nextInt(26)) :
-                    random.nextBoolean() ? (char) ('A' + random.nextInt(26)) : (char) ('0' + random.nextInt(9)));
+            sb.append(r.nextBoolean() ? (char) ('a' + r.nextInt(26)) :
+                    r.nextBoolean() ? (char) ('A' + r.nextInt(26)) : (char) ('0' + r.nextInt(10)));
         }
         return sb.toString();
     }
