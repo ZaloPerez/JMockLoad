@@ -25,9 +25,6 @@ public class RandomMultiDimensionalArrayGenerator<T> implements ValueGenerator<O
      * @param dimensions Both the amount of dimensions and the size of each one of them.
      */
     public RandomMultiDimensionalArrayGenerator(Class<T> componentType, ValueGenerator<T> valuesGenerator, int... dimensions) {
-        if (!componentType.isPrimitive()) {
-            //throw new IllegalArgumentException("Non-primitives are not allowed: " + primitiveType);
-        }
         this.componentType = componentType;
         this.valuesGenerator = valuesGenerator;
         this.dimensions = dimensions;
