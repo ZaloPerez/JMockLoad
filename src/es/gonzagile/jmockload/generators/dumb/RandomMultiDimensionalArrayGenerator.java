@@ -25,6 +25,13 @@ public class RandomMultiDimensionalArrayGenerator<T> implements ValueGenerator<O
      * @param dimensions Both the amount of dimensions and the size of each one of them.
      */
     public RandomMultiDimensionalArrayGenerator(Class<T> componentType, ValueGenerator<T> valuesGenerator, int... dimensions) {
+        if (componentType == null || valuesGenerator == null || dimensions == null || dimensions.length == 0) {
+            throw new IllegalArgumentException("Invalid constructor params: no null values allowed, dimensions can't be empty");
+        } else {
+            for(int dimension : dimensions) {
+                if (dimension <= 0) throw new IllegalArgumentException("Array size must be 1 or greater");
+            }
+        }
         this.componentType = componentType;
         this.valuesGenerator = valuesGenerator;
         this.dimensions = dimensions;
