@@ -29,7 +29,7 @@ public class RandomMultiDimensionalArrayGenerator<T> implements ValueGenerator<O
             throw new IllegalArgumentException("Invalid constructor params: no null values allowed, dimensions can't be empty");
         } else {
             for(int dimension : dimensions) {
-                if (dimension <= 0) throw new IllegalArgumentException("Array size must be 1 or greater");
+                if (dimension < 0) throw new IllegalArgumentException("Array size must be 0 or greater");
             }
         }
         this.componentType = componentType;

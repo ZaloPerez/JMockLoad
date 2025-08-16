@@ -47,6 +47,8 @@ public class RandomPrimitiveArrayGenerator<T> implements ValueGenerator<Object> 
     public RandomPrimitiveArrayGenerator(Class<T> primitiveType, ValueGenerator<T> valuesGenerator, int minlen, int maxlen) {
         if (!primitiveType.isPrimitive()) {
             throw new IllegalArgumentException("Non-primitives are not allowed: " + primitiveType);
+        } else if(minlen < 0 || maxlen < 0) {
+            throw new IllegalArgumentException("Array size must be 0 or greater");
         }
         this.primitiveType = primitiveType;
         this.valuesGenerator = valuesGenerator;
