@@ -10,8 +10,8 @@ Simple! The short summary is that it generates a List of objects of your choice 
 
 ## How can I test it?
 
-First you need to instanciate the JMockLoad core class by ussing its main constructor, **JMockLoad(Class<T> clazz, int size)**, which requires a Class and the size of the list you want to create.
-Then you just need to instanciate a List of the predefinded objects with the **JMockLoad.execute()** method, and you will generate as many object as you told to the JMockLoad's constructor. Those objects will have null values in all their fields.
+First you need to instantiate the JMockLoad core class by ussing its main constructor, **JMockLoad(Class<T> clazz, int size)**, which requires a Class and the size of the list you want to create.
+Then you just need to instantiate a List of the predefinded objects with the **JMockLoad.execute()** method, and you will generate as many object as you told to the JMockLoad's constructor. Those objects will have null values in all their fields.
 
 ## How can I generate the values of a field?
 
