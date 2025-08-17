@@ -23,7 +23,7 @@ public final class StringCharactersDictionaryConstraint implements FieldConstrai
      */
     @Override
     public boolean isValid(Object value) {
-        if(!(value instanceof String input)) throw new IllegalArgumentException("the param of the method must be a String");
+        if(!(value instanceof String input)) throw new IllegalArgumentException("Method's param must be a String");
         return input.chars().mapToObj(c -> (char) c).anyMatch(c -> !dictionary.contains(c));
     }
 

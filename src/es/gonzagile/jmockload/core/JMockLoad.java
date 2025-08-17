@@ -12,7 +12,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * JMockLoad is the core class of the JMoclLoad library. It is used to set the class of the objects to be generated,
+ * JMockLoad is the core class of the JMockLoad library. It is used to set the class of the objects to be generated,
  * the amount of objects to be generated and the generators and constraints to generate the values of the fields
  * of the generated objects.
  * @param <T> The class of the objects to be generated.
@@ -32,7 +32,7 @@ public class JMockLoad<T> {
      */
     public JMockLoad(Class<T> clazz, int size) {
         if(clazz.isRecord() || clazz.isAnnotation() || clazz.isEnum() || clazz.isInterface()) {
-            throw new IllegalArgumentException("No se permiten records, anotaciones, enums ni interfaces.");
+            throw new IllegalArgumentException("Records, annotations, enums and interfaces are not allowed yet");
         }
         this.clazz = clazz;
         this.size = size;

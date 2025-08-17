@@ -34,7 +34,7 @@ public final class StringLengthConstraint implements FieldConstraint {
      */
     @Override
     public boolean isValid(Object value) {
-        if(!(value instanceof String)) throw new IllegalArgumentException("the param of the method must be a String");
+        if(!(value instanceof String)) throw new IllegalArgumentException("Method's param must be a String");
         return ((String) value).length() >= minlength && ((String) value).length() <= maxlength;
     }
 
