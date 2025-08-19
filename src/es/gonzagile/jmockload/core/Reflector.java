@@ -2,6 +2,9 @@ package es.gonzagile.jmockload.core;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.RecordComponent;
+import java.util.Arrays;
 
 /**
  * Used to instantiate the objects and their fields.
@@ -15,11 +18,32 @@ final class Reflector {
      */
     static <T> T createInstance(Class<T> clazz) {
         try {
+            if(clazz.isRecord()) {
+                return getRecordNewInstance(clazz);
+            }
             Constructor<T> constructor = clazz.getDeclaredConstructor();
             return constructor.newInstance();
         } catch (Exception e) {
             throw new RuntimeException("Failed to create instance of " + clazz.getName(), e);
         }
+    }
+
+    private static <T> T getRecordNewInstance(Class<T> clazz) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        RecordComponent[] components = clazz.getRecordComponents();
+        Class<?>[] paramTypes = Arrays.stream(components)
+                .map(RecordComponent::getType)
+                .toArray(Class<?>[]::new);
+
+        Constructor<T> canonical = clazz.getDeclaredConstructor(paramTypes);
+        canonical.setAccessible(true);
+
+        Object[] args = new Object[components.length];
+        for(int i = 0; i < components.length; i++) {
+            String name = components[i].getName();
+            Class<?> type = components[i].getType();
+            args[i] = GeneratorRegistry.get(type).generate();
+        }
+        return canonical.newInstance(args);
     }
 
     /**

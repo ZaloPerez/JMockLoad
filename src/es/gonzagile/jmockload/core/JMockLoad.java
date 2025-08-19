@@ -31,8 +31,8 @@ public class JMockLoad<T> {
      * @param size The amount of objects to be generated and added to the final collection.
      */
     public JMockLoad(Class<T> clazz, int size) {
-        if(clazz.isRecord() || clazz.isAnnotation() || clazz.isEnum() || clazz.isInterface()) {
-            throw new IllegalArgumentException("Records, annotations, enums and interfaces are not allowed yet");
+        if(clazz.isAnnotation() || clazz.isEnum() || clazz.isInterface()) {
+            throw new IllegalArgumentException("Annotations, enums and interfaces are not allowed yet");
         }
         this.clazz = clazz;
         this.size = size;
@@ -97,6 +97,7 @@ public class JMockLoad<T> {
      */
     private T generateInstance(int index) {
         T instance = Reflector.createInstance(clazz);
+        if(clazz.isRecord()) return instance;
         for (Field field : clazz.getDeclaredFields()) {
             Object value = generateValueForField(field, index);
             Reflector.setField(instance, field, value);
