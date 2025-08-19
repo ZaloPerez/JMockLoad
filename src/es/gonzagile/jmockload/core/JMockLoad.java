@@ -4,6 +4,7 @@ import es.gonzagile.jmockload.constraints.FieldConstraint;
 import es.gonzagile.jmockload.generators.ValueGenerator;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -97,8 +98,8 @@ public class JMockLoad<T> {
      */
     private T generateInstance(int index) {
         T instance = Reflector.createInstance(clazz);
-        if(clazz.isRecord()) return instance;
         for (Field field : clazz.getDeclaredFields()) {
+            if(Modifier.isFinal(field.getModifiers())) continue;
             Object value = generateValueForField(field, index);
             Reflector.setField(instance, field, value);
         }
