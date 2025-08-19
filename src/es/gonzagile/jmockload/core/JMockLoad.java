@@ -97,6 +97,15 @@ public class JMockLoad<T> {
      * @return The instance of the object.
      */
     private T generateInstance(int index) {
+        if(clazz.isRecord()) {
+            Map<String, Object> fields = new HashMap<>();
+            for(Field field : clazz.getDeclaredFields()) {
+                Object value = generateValueForField(field, index);
+                if(null != value) fields.put(field.getName(), value);
+            }
+            return Reflector.createInstance(clazz, fields);
+        }
+
         T instance = Reflector.createInstance(clazz);
         for (Field field : clazz.getDeclaredFields()) {
             if(Modifier.isFinal(field.getModifiers())) continue;

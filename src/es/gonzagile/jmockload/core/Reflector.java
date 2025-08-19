@@ -5,6 +5,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.RecordComponent;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Used to instantiate the objects and their fields.
@@ -18,8 +20,17 @@ final class Reflector {
      */
     static <T> T createInstance(Class<T> clazz) {
         try {
+            Constructor<T> constructor = clazz.getDeclaredConstructor();
+            return constructor.newInstance();
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create instance of " + clazz.getName(), e);
+        }
+    }
+
+    static <T> T createInstance(Class<T> clazz, Map<String, Object> fields) {
+        try {
             if(clazz.isRecord()) {
-                return getRecordNewInstance(clazz);
+                return getRecordNewInstance(clazz, fields);
             }
             Constructor<T> constructor = clazz.getDeclaredConstructor();
             return constructor.newInstance();
@@ -28,7 +39,8 @@ final class Reflector {
         }
     }
 
-    private static <T> T getRecordNewInstance(Class<T> clazz) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    private static <T> T getRecordNewInstance(Class<T> clazz, Map<String, Object> fields) throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+        if(null == fields) fields = new HashMap<>();
         RecordComponent[] components = clazz.getRecordComponents();
         Class<?>[] paramTypes = Arrays.stream(components)
                 .map(RecordComponent::getType)
@@ -39,7 +51,11 @@ final class Reflector {
 
         Object[] args = new Object[components.length];
         for(int i = 0; i < components.length; i++) {
-            String name = components[i].getName();
+            Object fieldValue = fields.get(components[i].getName());
+            if(null != fieldValue) {
+                args[i] = fieldValue;
+                continue;
+            }
             Class<?> type = components[i].getType();
             args[i] = GeneratorRegistry.get(type).generate();
         }
